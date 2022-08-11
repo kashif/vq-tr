@@ -1,3 +1,6 @@
 pytorch
 gluonts
 vector-quantize-pytorch
+einops
+matplotlib
+datasets
