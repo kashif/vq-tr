@@ -1,6 +1,6 @@
-pytorch
+torch
 gluonts
-vector-quantize-pytorch
+git+https://github.com/kashif/vector-quantize-pytorch@perplexity#egg=vector-quantize-pytorch
 einops
 matplotlib
 datasets
