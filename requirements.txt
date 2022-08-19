@@ -1,5 +1,5 @@
 torch
-gluonts
+gluonts[torch,pro]
 git+https://github.com/kashif/vector-quantize-pytorch@perplexity#egg=vector-quantize-pytorch
 einops
 matplotlib
