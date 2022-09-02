@@ -60,7 +60,10 @@ class ImplicitQuantileModule(nn.Module):
         )
 
     def forward(self, inputs):
-        taus = self.beta.sample(sample_shape=inputs.shape[:-1]).to(inputs.device)
+        if self.training:
+            taus = self.beta.sample(sample_shape=inputs.shape[:-1]).to(inputs.device)
+        else:
+            taus = torch.rand(size=inputs.shape[:-1], device=inputs.device)
 
         emb_taus = self.quantile_layer(taus)
         emb_inputs = inputs * (1.0 + emb_taus)
