@@ -10,8 +10,8 @@ from gluonts.core.component import validated
 from gluonts.time_feature import get_lags_for_frequency
 from gluonts.torch.distributions import DistributionOutput, StudentTOutput
 from gluonts.torch.modules.feature import FeatureEmbedder
-from gluonts.torch.modules.scaler import MeanScaler, NOPScaler
 from vector_quantize_pytorch import VectorQuantize
+from gluonts.torch.scaler import MeanScaler, NOPScaler
 
 
 def FeedForward(dim, hidden_dim, dropout=0.0):
@@ -400,7 +400,7 @@ class VQTrModel(nn.Module):
         # target
         context = past_target[:, -self.context_length :]
         observed_context = past_observed_values[:, -self.context_length :]
-        _, scale = self.scaler(context, observed_context)
+        _, _, scale = self.scaler(context, observed_context)
 
         inputs = (
             torch.cat((past_target, future_target), dim=1) / scale
