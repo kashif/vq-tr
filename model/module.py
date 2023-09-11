@@ -10,8 +10,8 @@ from gluonts.core.component import validated
 from gluonts.time_feature import get_lags_for_frequency
 from gluonts.torch.distributions import DistributionOutput, StudentTOutput
 from gluonts.torch.modules.feature import FeatureEmbedder
-from vector_quantize_pytorch import VectorQuantize
 from gluonts.torch.scaler import MeanScaler, NOPScaler
+from vector_quantize_pytorch import VectorQuantize
 
 
 def FeedForward(dim, hidden_dim, dropout=0.0):
@@ -463,7 +463,11 @@ class VQTrModel(nn.Module):
 
         dec_output = self.decoder(dec_input, x, tgt_mask=self.tgt_mask)
 
-        return self.param_proj(dec_output), vq_loss, vq_perplexity
+        return (
+            self.param_proj(dec_output),
+            vq_loss / len(self.encoder),
+            vq_perplexity / len(self.encoder),
+        )
 
     @torch.jit.ignore
     def output_distribution(
@@ -485,7 +489,6 @@ class VQTrModel(nn.Module):
         future_time_feat: torch.Tensor,
         num_parallel_samples: Optional[int] = None,
     ) -> torch.Tensor:
-
         if num_parallel_samples is None:
             num_parallel_samples = self.num_parallel_samples
 
