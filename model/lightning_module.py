@@ -33,7 +33,7 @@ class VQTrLightningModule(pl.LightningModule):
         )
         self.log(
             "train_perplexity",
-            train_perplexity.item(),
+            train_perplexity,
             on_epoch=True,
             on_step=True,
             prog_bar=True,
