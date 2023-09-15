@@ -3,6 +3,7 @@ import torch
 from gluonts.torch.modules.loss import DistributionLoss, NegativeLogLikelihood
 from gluonts.torch.util import weighted_average
 
+from .adan import Adan
 from .module import VQTrModel
 
 
@@ -12,7 +13,7 @@ class VQTrLightningModule(pl.LightningModule):
         model: VQTrModel,
         loss: DistributionLoss = NegativeLogLikelihood(),
         lr: float = 1e-3,
-        weight_decay: float = 1e-8,
+        weight_decay: float = 0.02,
     ) -> None:
         super().__init__()
         self.save_hyperparameters()
@@ -51,11 +52,12 @@ class VQTrLightningModule(pl.LightningModule):
 
     def configure_optimizers(self):
         """Returns the optimizer to use"""
-        return torch.optim.Adam(
+        # return torch.optim.Adam(
+        return Adan(
             self.model.parameters(),
             lr=self.lr,
             weight_decay=self.weight_decay,
-            capturable=False,
+            # capturable=False,
         )
 
     def forward(self, batch):

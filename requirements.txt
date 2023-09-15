@@ -4,3 +4,4 @@ git+https://github.com/kashif/vector-quantize-pytorch@perplexity#egg=vector-quan
 einops
 matplotlib
 datasets
+optuna

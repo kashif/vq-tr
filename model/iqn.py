@@ -11,8 +11,6 @@ from gluonts.torch.distributions import DistributionOutput
 from gluonts.torch.modules.lambda_layer import LambdaLayer
 
 
-# -
-
 class QuantileLayer(nn.Module):
     def __init__(self, num_output, cos_embedding_dim=128):
         super().__init__()
@@ -44,9 +42,9 @@ class ImplicitQuantileModule(nn.Module):
         super().__init__()
         self.output_domain_map = output_domain_map
         self.domain_map = domain_map
-        
+
         self.beta = Beta(concentration1=concentration1, concentration0=concentration0)
-        
+
         self.quantile_layer = QuantileLayer(
             in_features, cos_embedding_dim=cos_embedding_dim
         )
@@ -102,9 +100,11 @@ class ImplicitQuantileNetworkOutput(DistributionOutput):
     args_dim = {"quantile_function": 1}
 
     @validated()
-    def __init__(self, output_domain: str = None, concentration1=1.0, concentration0=1.0) -> None:
+    def __init__(
+        self, output_domain: str = None, concentration1=1.0, concentration0=1.0
+    ) -> None:
         super().__init__()
-        
+
         self.concentration1 = concentration1
         self.concentration0 = concentration0
 
