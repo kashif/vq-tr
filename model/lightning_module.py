@@ -1,3 +1,5 @@
+import time
+
 import pytorch_lightning as pl
 import torch
 from gluonts.torch.modules.loss import DistributionLoss, NegativeLogLikelihood
@@ -23,8 +25,11 @@ class VQTrLightningModule(pl.LightningModule):
 
     def training_step(self, batch, batch_idx: int):
         """Execute training step"""
-
+        st = time.time()
         train_loss, train_perplexity = self(batch)
+        et = time.time()
+        self.log("train_time (s)", et - st, on_epoch=True, on_step=False, prog_bar=True)
+                 
         self.log(
             "train_loss",
             train_loss.item(),
