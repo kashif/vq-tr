@@ -3,7 +3,6 @@ import torch
 from gluonts.torch.modules.loss import DistributionLoss, NegativeLogLikelihood
 from gluonts.torch.util import weighted_average
 
-from .adan import Adan
 from .module import VQTrModel
 
 
@@ -24,6 +23,7 @@ class VQTrLightningModule(pl.LightningModule):
 
     def training_step(self, batch, batch_idx: int):
         """Execute training step"""
+
         train_loss, train_perplexity = self(batch)
         self.log(
             "train_loss",
@@ -52,8 +52,7 @@ class VQTrLightningModule(pl.LightningModule):
 
     def configure_optimizers(self):
         """Returns the optimizer to use"""
-        # return torch.optim.Adam(
-        return Adan(
+        return torch.optim.AdamW(
             self.model.parameters(),
             lr=self.lr,
             weight_decay=self.weight_decay,
